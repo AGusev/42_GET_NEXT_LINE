@@ -6,7 +6,7 @@
 /*   By: agusev <agusev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 21:29:49 by agusev            #+#    #+#             */
-/*   Updated: 2019/03/05 21:09:55 by agusev           ###   ########.fr       */
+/*   Updated: 2019/03/05 21:29:01 by agusev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			newline(char **str, char **line, int fd, int n)
 
 int			get_next_line(const int fd, char **line)
 {
-	static char		*str[MAX_FD];
+	static char		*s[MAX_FD];
 	char			buffer[BUFF_SIZE + 1];
 	char			*tmp;
 	int				n;
@@ -54,17 +54,17 @@ int			get_next_line(const int fd, char **line)
 	while ((n = read(fd, buffer, BUFF_SIZE)) >= 0)
 	{
 		buffer[n] = '\0';
-		if (str[fd] == NULL)
-			str[fd] = ft_strnew(0);
-		tmp = ft_strjoin(str[fd], buffer);
-		free(str[fd]);
-		str[fd] = tmp;
+		if (s[fd] == NULL)
+			s[fd] = ft_strnew(0);
+		tmp = ft_strjoin(s[fd], buffer);
+		free(s[fd]);
+		s[fd] = tmp;
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
 	if (n < 0)
 		return (EOF);
-	else if (n == 0 && (str[fd] == NULL || str[fd][0] == '\0'))
+	else if (n == 0 && (s[fd] == NULL || s[fd][0] == '\0'))
 		return (0);
-	return (newline(str, line, fd, n));
+	return (newline(s, line, fd, n));
 }
